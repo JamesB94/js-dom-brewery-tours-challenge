@@ -23,13 +23,14 @@ function getData(USState) {
       return response.json();
     })
     .then((breweries) => {
-      //console.log(breweries);
+      console.log(breweries);
       setState(breweries)
       render()
     });
 }
 
 function setState(breweries) {
+    
     state.breweries = breweries
  
 }
@@ -39,7 +40,10 @@ function render() {
     //console.log('render: num of breweries is ', state.breweries.length)
     //createBrewery(state.breweries)
     state.breweries.forEach(brewery => {
+
         createBrewery(brewery)
+        filterPub(brewery)
+            
     });
 
 }
@@ -91,11 +95,32 @@ const createBrewery = (brewery) => {
     linkSection.append(websiteLink)  
 }
 
+const filterPub = (brewery) => {
+  const pubFilter = document.querySelector('#filter-by-type')
+
+  pubFilter.addEventListener('change', (event) => {
+    const breweryType = event.target.value
+    //console.log(breweryType)
+
+    fetch(`https://api.openbrewerydb.org/breweries?by_type=${breweryType}`)
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function(data){
+      //console.log('this is data', data)
+      setState(data)
+      render()
+    })
+    
+  })
+}
+
 
 
 const init = () => {
   // createCard()
   setUpListeners();
+  filterPub()
   //getData('ohio')
 };
 
