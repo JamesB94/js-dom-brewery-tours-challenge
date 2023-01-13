@@ -29,15 +29,10 @@ function getData(USState) {
       return response.json();
     })
     .then((breweries) => {
-             console.log(breweries);
+             //console.log(breweries);
              setState(breweries)
-            
             render()
            });
-}
-
-const thisIsRawData = () => {
-console.log('this is my test ', state.rawData)
 }
 
 function setState(breweries) {
