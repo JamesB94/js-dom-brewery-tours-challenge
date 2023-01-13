@@ -1,7 +1,9 @@
 let state = {
-  breweries: [],
+  breweries: []
 };
 const theUL = document.querySelector(".breweries-list");
+
+
 
 const setUpListeners = () => {
   const userSearch = document.querySelector("#select-state-form");
@@ -16,17 +18,26 @@ const setUpListeners = () => {
   });
 };
 
+
 function getData(USState) {
-  // fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}`)
+  
+
+  
+
   fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}`)
     .then((response) => {
       return response.json();
     })
     .then((breweries) => {
-      console.log(breweries);
-      setState(breweries)
-      render()
-    });
+             console.log(breweries);
+             setState(breweries)
+            
+            render()
+           });
+}
+
+const thisIsRawData = () => {
+console.log('this is my test ', state.rawData)
 }
 
 function setState(breweries) {
@@ -41,8 +52,16 @@ function render() {
     //createBrewery(state.breweries)
     state.breweries.forEach(brewery => {
 
+      if( brewery.brewery_type === 'micro'  || brewery.brewery_type === "brewpub" || brewery.brewery_type === 'regional' ) {
         createBrewery(brewery)
         filterPub(brewery)
+
+      } else {
+        console.log('Not a micro' )
+      }
+      
+
+        
             
     });
 
@@ -119,6 +138,7 @@ const filterPub = (brewery) => {
 
 const init = () => {
   // createCard()
+  //thisIsRawData();
   setUpListeners();
   filterPub()
   //getData('ohio')
