@@ -3,17 +3,21 @@ let state = {
 };
 const theUL = document.querySelector(".breweries-list");
 
-console.log('this is the state ', state.breweries)
-
 const setUpListeners = () => {
   const userSearch = document.querySelector("#select-state-form");
   userSearch.addEventListener("submit", (e) => {
     e.preventDefault();
     const userState = document.querySelector("#select-state").value.replace(" ", "_").toLowerCase();
-    const typeOf = document.querySelector("#filter-by-type").value.replace(" ").toLowerCase();
-    getData(userState, typeOf);
+    const typeOf = document.querySelector("#filter-by-type").value.toLowerCase();
+
+    if(typeOf && userState ) {
+      getData(userState, typeOf);
+    } else {
+      getState(userState)
+    }
   });
 };
+
 
 
 function getData(USState, breweryType ) {
@@ -22,11 +26,24 @@ function getData(USState, breweryType ) {
       return response.json();
     })
     .then((breweries) => {
-             //console.log(breweries);
              setState(breweries)
             render()
            });
 }
+
+function getState(USState ) {
+  fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}`)
+     .then((response) => {
+       return response.json();
+     })
+     .then((breweries) => {
+              setState(breweries)
+             render()
+            });
+ }
+
+
+
 
 function setState(breweries) {
     
