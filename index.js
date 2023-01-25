@@ -7,6 +7,8 @@ const setUpListeners = () => {
   const userSearch = document.querySelector("#select-state-form");
   userSearch.addEventListener("submit", (e) => {
     e.preventDefault();
+    state.breweries = [];
+    theUL.innerHTML = ''; 
     const userState = document.querySelector("#select-state").value.replace(" ", "_").toLowerCase();
     const typeOf = document.querySelector("#filter-by-type").value.toLowerCase();
 
@@ -32,6 +34,7 @@ function getData(USState, breweryType ) {
 }
 
 function getState(USState ) {
+  
   fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}`)
      .then((response) => {
        return response.json();
@@ -46,7 +49,6 @@ function getState(USState ) {
 
 
 function setState(breweries) {
-    
     state.breweries = breweries
  
 }
@@ -67,6 +69,7 @@ function render() {
 }
 
 const createBrewery = (brewery) => {
+    
     const listItem = document.createElement('li')
     const breweryName = document.createElement('h2')
     const typeOfBrewery = document.createElement('div')
@@ -115,11 +118,7 @@ const createBrewery = (brewery) => {
 }
 
 const init = () => {
-  // createCard()
-  //thisIsRawData();
   setUpListeners();
-  //filterPub()
-  //getData('ohio')
 };
 
 init();
