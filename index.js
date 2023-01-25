@@ -3,28 +3,21 @@ let state = {
 };
 const theUL = document.querySelector(".breweries-list");
 
-
+console.log('this is the state ', state.breweries)
 
 const setUpListeners = () => {
   const userSearch = document.querySelector("#select-state-form");
   userSearch.addEventListener("submit", (e) => {
     e.preventDefault();
-    const userState = document
-      .querySelector("#select-state")
-      .value.replace(" ", "_")
-      .toLowerCase();
-    //alert(userState)
-    getData(userState);
+    const userState = document.querySelector("#select-state").value.replace(" ", "_").toLowerCase();
+    const typeOf = document.querySelector("#filter-by-type").value.replace(" ").toLowerCase();
+    getData(userState, typeOf);
   });
 };
 
 
-function getData(USState) {
-  
-
-  
-
-  fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}`)
+function getData(USState, breweryType ) {
+ fetch(`https://api.openbrewerydb.org/breweries?by_state=${USState}&by_type=${breweryType}`)
     .then((response) => {
       return response.json();
     })
@@ -46,17 +39,11 @@ function render() {
     //console.log('render: num of breweries is ', state.breweries.length)
     //createBrewery(state.breweries)
     state.breweries.forEach(brewery => {
-
       if( brewery.brewery_type === 'micro'  || brewery.brewery_type === "brewpub" || brewery.brewery_type === 'regional' ) {
         createBrewery(brewery)
-        filterPub(brewery)
-
       } else {
         console.log('Not a micro' )
-      }
-      
-
-        
+      }  
             
     });
 
@@ -107,35 +94,14 @@ const createBrewery = (brewery) => {
     phoneNumSection.append(phoneNumber)
 
     linkSection.append(websiteLink)  
+
 }
-
-const filterPub = (brewery) => {
-  const pubFilter = document.querySelector('#filter-by-type')
-
-  pubFilter.addEventListener('change', (event) => {
-    const breweryType = event.target.value
-    //console.log(breweryType)
-
-    fetch(`https://api.openbrewerydb.org/breweries?by_type=${breweryType}`)
-    .then(function (response) {
-      return response.json()
-    })
-    .then(function(data){
-      //console.log('this is data', data)
-      setState(data)
-      render()
-    })
-    
-  })
-}
-
-
 
 const init = () => {
   // createCard()
   //thisIsRawData();
   setUpListeners();
-  filterPub()
+  //filterPub()
   //getData('ohio')
 };
 
