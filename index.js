@@ -12,13 +12,29 @@ const setUpListeners = () => {
     const userState = document.querySelector("#select-state").value.replace(" ", "_").toLowerCase();
     const typeOf = document.querySelector("#filter-by-type").value.toLowerCase();
 
-    if(typeOf && userState ) {
+    const filterByType = document.querySelector("#filter-by-type")
+
+    if(typeOf) {
+      theUL.innerHTML = ''; 
       getData(userState, typeOf);
     } else {
       getState(userState)
     }
+
+    filterByType.addEventListener("change", (e) => {
+      state.breweries = [];
+      theUL.innerHTML = '';
+      const userState = document.querySelector("#select-state").value.replace(" ", "_").toLowerCase();
+      const typeOf = e.target.value.toLowerCase();
+      if(typeOf) {
+        getData(userState, typeOf);
+      } else {
+        getState(userState);
+      }
+
   });
-};
+});
+}
 
 
 
